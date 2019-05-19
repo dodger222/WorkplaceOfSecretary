@@ -89,13 +89,13 @@ namespace WorkplaceOfSecretary.Controllers
                 return NotFound();
             }
 
-            var @group = await _context.Groups.FindAsync(id);
-            if (@group == null)
+            var group = await _context.Groups.FindAsync(id);
+            if (group == null)
             {
                 return NotFound();
             }
-            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "NameOfSpecialty", @group.SpecialtyID);
-            return View(@group);
+            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "NameOfSpecialty", group.SpecialtyID);
+            return View(group);
         }
 
         // POST: Group/Edit/5
