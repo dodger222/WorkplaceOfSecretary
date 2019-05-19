@@ -10,23 +10,23 @@ using WorkplaceOfSecretary.Models;
 
 namespace WorkplaceOfSecretary.Controllers
 {
-    public class GroupController : Controller
+    public class StudentController : Controller
     {
         private readonly WoSContext _context;
 
-        public GroupController(WoSContext context)
+        public StudentController(WoSContext context)
         {
             _context = context;
         }
 
-        // GET: Group
+        // GET: Student
         public async Task<IActionResult> Index()
         {
-            var woSContext = _context.Groups.Include(g => g.Specialty);
+            var woSContext = _context.Students.Include(s => s.Group);
             return View(await woSContext.ToListAsync());
         }
 
-        // GET: Group/Details/5
+        // GET: Student/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,42 @@ namespace WorkplaceOfSecretary.Controllers
                 return NotFound();
             }
 
-            var @group = await _context.Groups
-                .Include(g => g.Specialty)
+            var student = await _context.Students
+                .Include(s => s.Group)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (@group == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(@group);
+            return View(student);
         }
 
-        // GET: Group/Create
+        // GET: Student/Create
         public IActionResult Create()
         {
-            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "ID");
+            ViewData["GroupID"] = new SelectList(_context.Groups, "ID", "ID");
             return View();
         }
 
-        // POST: Group/Create
+        // POST: Student/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,SpecialtyID,NumberOfGroup")] Group @group)
+        public async Task<IActionResult> Create([Bind("ID,LastName,FirstName,Patronymic,GroupID,AverageScore,Foreigner")] Student student)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@group);
+                _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "ID", @group.SpecialtyID);
-            return View(@group);
+            ViewData["GroupID"] = new SelectList(_context.Groups, "ID", "ID", student.GroupID);
+            return View(student);
         }
 
-        // GET: Group/Edit/5
+        // GET: Student/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +77,23 @@ namespace WorkplaceOfSecretary.Controllers
                 return NotFound();
             }
 
-            var @group = await _context.Groups.FindAsync(id);
-            if (@group == null)
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
             {
                 return NotFound();
             }
-            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "ID", @group.SpecialtyID);
-            return View(@group);
+            ViewData["GroupID"] = new SelectList(_context.Groups, "ID", "ID", student.GroupID);
+            return View(student);
         }
 
-        // POST: Group/Edit/5
+        // POST: Student/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,SpecialtyID,NumberOfGroup")] Group @group)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,LastName,FirstName,Patronymic,GroupID,AverageScore,Foreigner")] Student student)
         {
-            if (id != @group.ID)
+            if (id != student.ID)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace WorkplaceOfSecretary.Controllers
             {
                 try
                 {
-                    _context.Update(@group);
+                    _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GroupExists(@group.ID))
+                    if (!StudentExists(student.ID))
                     {
                         return NotFound();
                     }
@@ -118,11 +118,11 @@ namespace WorkplaceOfSecretary.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "ID", @group.SpecialtyID);
-            return View(@group);
+            ViewData["GroupID"] = new SelectList(_context.Groups, "ID", "ID", student.GroupID);
+            return View(student);
         }
 
-        // GET: Group/Delete/5
+        // GET: Student/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +130,31 @@ namespace WorkplaceOfSecretary.Controllers
                 return NotFound();
             }
 
-            var @group = await _context.Groups
-                .Include(g => g.Specialty)
+            var student = await _context.Students
+                .Include(s => s.Group)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (@group == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(@group);
+            return View(student);
         }
 
-        // POST: Group/Delete/5
+        // POST: Student/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @group = await _context.Groups.FindAsync(id);
-            _context.Groups.Remove(@group);
+            var student = await _context.Students.FindAsync(id);
+            _context.Students.Remove(student);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GroupExists(int id)
+        private bool StudentExists(int id)
         {
-            return _context.Groups.Any(e => e.ID == id);
+            return _context.Students.Any(e => e.ID == id);
         }
     }
 }
