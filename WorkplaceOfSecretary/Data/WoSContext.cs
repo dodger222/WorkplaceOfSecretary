@@ -16,5 +16,7 @@ namespace WorkplaceOfSecretary.Data
         public DbSet<Specialty> Specialties { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Degree> Degrees { get; set; }
+        public DbSet<Rank> Ranks { get; set; }
     }
 }
