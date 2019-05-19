@@ -20,6 +20,7 @@ namespace WorkplaceOfSecretary.Models
         public int LeaderID { get; set; }
         public string Theme { get; set; }
         public string Consultants { get; set; }
+        [Column("IdMeeting")]
         public int MeetingID { get; set; }
 
         public Student Student { get; set; }

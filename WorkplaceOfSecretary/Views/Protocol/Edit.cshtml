@@ -1,0 +1,74 @@
+﻿@model WorkplaceOfSecretary.Models.Protocol
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Protocol</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="StudentID" class="control-label"></label>
+                <select asp-for="StudentID" class="form-control" asp-items="ViewBag.StudentID"></select>
+                <span asp-validation-for="StudentID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastNameInDative" class="control-label"></label>
+                <input asp-for="LastNameInDative" class="form-control" />
+                <span asp-validation-for="LastNameInDative" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastNameInGenitive" class="control-label"></label>
+                <input asp-for="LastNameInGenitive" class="form-control" />
+                <span asp-validation-for="LastNameInGenitive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstNameInGenitive" class="control-label"></label>
+                <input asp-for="FirstNameInGenitive" class="form-control" />
+                <span asp-validation-for="FirstNameInGenitive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatronymicInGenitive" class="control-label"></label>
+                <input asp-for="PatronymicInGenitive" class="form-control" />
+                <span asp-validation-for="PatronymicInGenitive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeaderID" class="control-label"></label>
+                <select asp-for="LeaderID" class="form-control" asp-items="ViewBag.LeaderID"></select>
+                <span asp-validation-for="LeaderID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Theme" class="control-label"></label>
+                <input asp-for="Theme" class="form-control" />
+                <span asp-validation-for="Theme" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Consultants" class="control-label"></label>
+                <input asp-for="Consultants" class="form-control" />
+                <span asp-validation-for="Consultants" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MeetingID" class="control-label"></label>
+                <select asp-for="MeetingID" class="form-control" asp-items="ViewBag.MeetingID"></select>
+                <span asp-validation-for="MeetingID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<WorkplaceOfSecretary.Models.Protocol>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LastNameInDative)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastNameInGenitive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstNameInGenitive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatronymicInGenitive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Theme)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Consultants)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leader)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Meeting)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastNameInDative)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastNameInGenitive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstNameInGenitive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatronymicInGenitive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Theme)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Consultants)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Leader.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Meeting.ID)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
