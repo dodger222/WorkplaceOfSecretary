@@ -34,15 +34,17 @@ namespace WorkplaceOfSecretary.Controllers
                 return NotFound();
             }
 
-            var @group = await _context.Groups
+            var group = await _context.Groups
                 .Include(g => g.Specialty)
+                .Include(g => g.Students)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (@group == null)
+            if (group == null)
             {
                 return NotFound();
             }
 
-            return View(@group);
+            return View(group);
         }
 
         // GET: Group/Create
