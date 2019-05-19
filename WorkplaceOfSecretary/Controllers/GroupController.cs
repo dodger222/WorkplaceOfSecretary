@@ -131,22 +131,29 @@ namespace WorkplaceOfSecretary.Controllers
         }
 
         // GET: Group/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var @group = await _context.Groups
+            var group = await _context.Groups
                 .Include(g => g.Specialty)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (@group == null)
+            if (group == null)
             {
                 return NotFound();
             }
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
+            }
 
-            return View(@group);
+            return View(group);
         }
 
         // POST: Group/Delete/5
@@ -154,10 +161,22 @@ namespace WorkplaceOfSecretary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @group = await _context.Groups.FindAsync(id);
-            _context.Groups.Remove(@group);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var group = await _context.Groups.FindAsync(id);
+            if(group == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            try
+            {
+                _context.Groups.Remove(group);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }
         }
 
         private bool GroupExists(int id)
