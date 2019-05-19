@@ -50,7 +50,7 @@ namespace WorkplaceOfSecretary.Controllers
         // GET: Group/Create
         public IActionResult Create()
         {
-            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "ID");
+            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "NameOfSpecialty");
             return View();
         }
 
@@ -59,16 +59,26 @@ namespace WorkplaceOfSecretary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,SpecialtyID,NumberOfGroup")] Group @group)
+        public async Task<IActionResult> Create(Group group)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(@group);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(group);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "ID", @group.SpecialtyID);
-            return View(@group);
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
+            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "NameOfSpecialty", group.SpecialtyID);
+            return View(group);
         }
 
         // GET: Group/Edit/5
@@ -84,7 +94,7 @@ namespace WorkplaceOfSecretary.Controllers
             {
                 return NotFound();
             }
-            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "ID", @group.SpecialtyID);
+            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "NameOfSpecialty", @group.SpecialtyID);
             return View(@group);
         }
 
@@ -93,9 +103,9 @@ namespace WorkplaceOfSecretary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,SpecialtyID,NumberOfGroup")] Group @group)
+        public async Task<IActionResult> Edit(int? id, [Bind("ID,SpecialtyID,NumberOfGroup")] Group group)
         {
-            if (id != @group.ID)
+            if (id != group.ID)
             {
                 return NotFound();
             }
@@ -104,24 +114,20 @@ namespace WorkplaceOfSecretary.Controllers
             {
                 try
                 {
-                    _context.Update(@group);
+                    _context.Update(group);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException /* ex */)
                 {
-                    if (!GroupExists(@group.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "ID", @group.SpecialtyID);
-            return View(@group);
+            ViewData["SpecialtyID"] = new SelectList(_context.Specialties, "ID", "NameOfSpecialty", group.SpecialtyID);
+            return View(group);
         }
 
         // GET: Group/Delete/5
